@@ -16,7 +16,7 @@
                     <div class="card-header bg-primary text-white">Signup options</div>
                     <div class="card-body">
                         <a class="btn btn-primary" href="{{route('signup.as_candidate')}}">Signup as Candidate</a>
-                        <a class="btn btn-primary" href="">Sigup as Employer</a>
+                        <a class="btn btn-primary" href="{{route('signup.as_employer')}}">Sigup as Employer</a>
                     </div>
                 </div>
             </div>

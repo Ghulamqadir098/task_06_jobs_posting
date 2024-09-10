@@ -51,7 +51,46 @@ class AuthController extends Controller
 
         $user->roles()->attach($role->id);
 
-         dd('USer Created');
+        return redirect('/');
+
+
+    }
+
+    public function employer_form(){
+
+    return view('pages.auth.employer_form');
+    }
+    public function employer_signup(Request $request){
+
+   $request->validate([
+        'name' =>'required|string',
+        'email' =>'required|email|unique:users',
+        'password' => 'required|min:8|confirmed',
+        'company_name' =>'required|string',
+        'company_logo'=>'required|file',
+        'company_location'=>'required|unique:users',
+        'head_count'=>'required',
+    ]);
+    if($request->file('company_logo')){
+
+        $filePathlogo = $request->file('company_logo')->store('company_logo', 'public');
+    }
+
+    $user= User::create(
+   [
+        'name' => $request->name,
+        'email' => $request->email,
+        'password'=>$request->password,
+        'company_name' => $request->company_name,
+        'company_logo'=>$filePathlogo,
+        'company_location'=>$request->company_location,
+        'head_count'=>$request->head_count
+
+   ]);
+    $role=Role::find(3);
+    $user->roles()->attach($role->id);
+    
+    return redirect('/');
 
     }
 
