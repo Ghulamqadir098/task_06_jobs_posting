@@ -15,7 +15,7 @@
                 <div class="card">
                     <div class="card-header bg-primary text-white">Login</div>
                     <div class="card-body">
-                        <form method="POST" action="#">
+                        <form method="POST" action="{{route('login')}}">
                             @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
@@ -26,7 +26,7 @@
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Login</button>
-                            <a href="#" class="float-end btn btn-primary">Signup</a>
+                            <a href="{{route('signup.options')}}" class="float-end btn btn-primary">Signup</a>
                         </form>
                     </div>
                 </div>

@@ -15,7 +15,7 @@
 </li>
 {{-- @endif    --}}
 
-            <li><a href="#">Logout</a></li>
+            <li><a href="{{route('logout')}}">Logout</a></li>
         </ul>
     </nav>
 </div>
