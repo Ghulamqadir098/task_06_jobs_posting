@@ -28,5 +28,36 @@
           ]
       });
           
+
+
+
+    // Handle delete button click
+    $('.data-table').on('click', '.delete-category', function() {
+        var id = $(this).data('id');
+        var url = "{{ url('category/delete') }}/" + id;
+
+        if (confirm("Are you sure you want to delete this category?")) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function(response) {
+                    alert('Category deleted successfully');
+                    table.ajax.reload(); // Reload DataTable
+                },
+                error: function(xhr) {
+                    alert('Error deleting category');
+                }
+            });
+        }
+    });
+
+
+
+
+
+
     });
   </script>

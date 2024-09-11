@@ -39,12 +39,43 @@ class CategoryController extends Controller
 
         $categories = Category::select(['id', 'name', 'created_at', 'updated_at']);
         return DataTables::of($categories)
-            ->addColumn('action', function($row){
-                return '<a href="/categories/edit/'.$row->id.'" class="btn btn-sm btn-primary">Edit</a>';
-            })
+        ->addColumn('action', function($row){
+          $editUrl = route('category.edit', $row->id);
+          $deleteUrl = route('category.delete', $row->id);
+
+          return '
+          <a href="'.$editUrl.'" class="btn btn-sm btn-primary">Edit</a>
+          <button class="btn btn-sm btn-danger delete-category" data-id="'.$row->id.'">Del</button>';
+      })
+      ->rawColumns(['action'])
             ->make(true);
     }
-      
+    }
+    public function category_edit($id){
+   $category = Category::find($id);
+
+   return view('pages.categories.edit_category', compact('category'));
 
     }
+
+    public function category_update(Request $request, $id){
+
+   $request->validate([
+      'name' =>'required|string',
+   ]);
+   
+   
+   $category = Category::find($id);
+   $category->name = $request->name;
+   $category->save();
+
+   return redirect()->route('category.index');
+  }
+
+  public function category_delete($id){
+
+  $category = Category::find($id);
+  $category->delete();
+  return response()->json(['success' => 'Category deleted successfully']);
+  }
 }
