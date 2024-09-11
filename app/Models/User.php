@@ -35,6 +35,20 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+        // An employer has many jobs
+        public function postedJobs()
+        {
+            return $this->hasMany(Job::class, 'employer_id');
+        }
+
+            // A candidate can apply to many jobs
+    public function appliedJobs()
+    {
+        return $this->belongsToMany(Job::class, 'job_user', 'user_id', 'job_id')
+                    ->withTimestamps();
+    }
+    
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,8 +11,9 @@ Route::get('/', function () {
 
 Route::prefix('dashboard')->group(function () {
 
+    Route::middleware('auth')->group(function () {    
 route::get('home',[DashboardController::class,'home'])->name('dashboard.home');
-
+});
 
 });
 
@@ -26,4 +28,16 @@ Route::post('employer_signup',[AuthController::class,'employer_signup'])->name('
 Route::post('candidate_signup',[AuthController::class,'candidate_sigup'])->name('signup.candidate');
 Route::post('login',[AuthController::class,'login'])->name('login');
 Route::get('logout',[AuthController::class,'logout'])->name('logout');
+});
+
+
+Route::prefix('category')->group(function () {
+
+Route::middleware('role:super_admin')->group(function () {    
+ Route::get('category_form',[CategoryController::class,'category_form'])->name('category.form');
+Route::post('create',[CategoryController::class,'category_create'])->name('category.create');
+Route::get('categories',[CategoryController::class,'index'])->name('category.index');
+Route::get('view',[CategoryController::class,'category_view'])->name('category.view');
+});
+
 });

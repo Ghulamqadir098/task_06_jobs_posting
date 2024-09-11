@@ -42,7 +42,9 @@ body {
 .dropdown {
     position: relative;
 }
-
+.dropdown1 {
+    position: relative;
+}
 .dropdown-menu {
   
     display: none;
