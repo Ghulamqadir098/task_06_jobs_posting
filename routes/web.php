@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('pages.auth.signin_form');
@@ -42,5 +43,17 @@ Route::get('edit/{id}',[CategoryController::class,'category_edit'])->name('categ
 Route::put('update/{id}',[CategoryController::class,'category_update'])->name('category.update');
 Route::delete('delete/{id}',[CategoryController::class,'category_delete'])->name('category.delete');
 });
+});
 
+// Jobs Related routes 
+Route::prefix('job')->group(function () {
+    Route::middleware('role:employer,super_admin')->group(function () {    
+      Route::get('job_form',[JobController::class,'job_form'])->name('job.form');
+     Route::post('create',[JobController::class,'job_create'])->name('job.create');
+     Route::get('jobs',[JobController::class,'index'])->name('job.index');
+     Route::get('view',[JobController::class,'job_view'])->name('job.view');
+     Route::get('edit/{id}',[JobController::class,'job_edit'])->name('job.edit');
+     Route::put('update/{id}',[JobController::class,'job_update'])->name('job.update');
+     Route::delete('delete/{id}',[JobController::class,'job_delete'])->name('job.delete');
+    });
 });

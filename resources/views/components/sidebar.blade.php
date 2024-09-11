@@ -19,7 +19,8 @@
 
 @if (Auth::user()->roles->contains('name', 'employer') || Auth::user()->roles->contains('name', 'super_admin'))
 
-<li><a href="#">Create Job</a></li>
+<li><a href="{{route('job.form')}}">Create Job</a></li>
+<li><a href="{{route('job.index')}}">My posted Jobs</a></li>
 
 @endif   
 
