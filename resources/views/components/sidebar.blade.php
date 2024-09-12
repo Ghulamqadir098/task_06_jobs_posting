@@ -1,7 +1,7 @@
 <div class="sidebar">
     <nav class="nav-menu">
         <ul>
-            <li><a href="#">Home</a></li>
+            <li class="bg-success fw-bold text-center p-2">{{Auth::user()->name}}</li>
 
 
 @if (Auth::user()->roles->contains('name','super_admin'))
@@ -15,14 +15,24 @@
 
     </ul>
 </li>
+
+<li><a href="{{route('total.jobs.index')}}">View all Jobs</a></li>
+<li><a href="{{route('total.employers.index')}}">View all Employers</a></li>
+
 @endif   
 
-@if (Auth::user()->roles->contains('name', 'employer') || Auth::user()->roles->contains('name', 'super_admin'))
+@if (Auth::user()->roles->contains('name', 'employer'))
 
 <li><a href="{{route('job.form')}}">Create Job</a></li>
 <li><a href="{{route('job.index')}}">My posted Jobs</a></li>
 
-@endif   
+@endif  
+
+@if (Auth::user()->roles->contains('name','candidate'))
+
+<li><a href="{{route('candidate.jobs.index')}}">Jobs Listings</a></li>
+    
+@endif
 
             <li><a href="{{route('logout')}}">Logout</a></li>
         </ul>

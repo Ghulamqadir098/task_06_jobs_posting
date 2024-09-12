@@ -21,8 +21,7 @@ class Job extends Model
      // A job can have many candidates applying for it
     public function candidates()
     {
-        return $this->belongsToMany(User::class, 'job_user', 'job_id', 'user_id')
-                    ->withTimestamps();
+        return $this->belongsToMany(User::class, 'job_user', 'job_id', 'user_id');
     }
 
         // Job belongs to one Category

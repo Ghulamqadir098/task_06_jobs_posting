@@ -45,8 +45,7 @@ class User extends Authenticatable
             // A candidate can apply to many jobs
     public function appliedJobs()
     {
-        return $this->belongsToMany(Job::class, 'job_user', 'user_id', 'job_id')
-                    ->withTimestamps();
+        return $this->belongsToMany(Job::class, 'job_user', 'user_id', 'job_id');
     }
     
     /**

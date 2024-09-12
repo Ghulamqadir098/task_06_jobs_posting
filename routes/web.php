@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 
@@ -47,7 +49,7 @@ Route::delete('delete/{id}',[CategoryController::class,'category_delete'])->name
 
 // Jobs Related routes 
 Route::prefix('job')->group(function () {
-    Route::middleware('role:employer,super_admin')->group(function () {    
+    Route::middleware('role:employer')->group(function () {    
       Route::get('job_form',[JobController::class,'job_form'])->name('job.form');
      Route::post('create',[JobController::class,'job_create'])->name('job.create');
      Route::get('jobs',[JobController::class,'index'])->name('job.index');
@@ -55,5 +57,29 @@ Route::prefix('job')->group(function () {
      Route::get('edit/{id}',[JobController::class,'job_edit'])->name('job.edit');
      Route::put('update/{id}',[JobController::class,'job_update'])->name('job.update');
      Route::delete('delete/{id}',[JobController::class,'job_delete'])->name('job.delete');
+    });
+});
+
+
+// Super Admin Routes 
+Route::prefix('admin')->group(function () {
+    Route::middleware('role:super_admin')->group(function () { 
+   Route::get('total_jobs',[AdminController::class,'total_jobs_index'])->name('total.jobs.index');   
+   Route::get('total_jobs_view',[AdminController::class,'total_jobs_view'])->name('total.jobs.view');   
+   //Employers list   
+   Route::get('total_employers',[AdminController::class,'total_employers_index'])->name('total.employers.index'); 
+  Route::get('total_employers_view',[AdminController::class,'total_employ_view'])->name('total.employers.view');
+});
+
+});
+
+
+Route::prefix('candidate')->group(function () {
+
+    Route::middleware('role:candidate')->group(function () { 
+   Route::get('total_jobs',[CandidateController::class,'total_jobs_index'])->name('candidate.jobs.index');   
+   Route::get('total_jobs_view',[CandidateController::class,'total_jobs_view'])->name('candidate.jobs.view'); 
+   Route::get('job_apply/{id}',[CandidateController::class,'job_form'])->name('candidate.jobs.apply'); 
+   Route::post('job_confirmed/{id}',[CandidateController::class,'job_confirmed'])->name('candidate.job.confirmed'); 
     });
 });
