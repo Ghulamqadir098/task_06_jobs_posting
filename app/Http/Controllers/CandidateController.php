@@ -47,12 +47,21 @@ return view('pages.jobs.candidate.candidate_job_form',compact('job'));
         $job = Job::find($id); // Find the job by ID
 
         if ($job) {
+
+     // Check if the user has already applied to the job
+     if ($user->appliedJobs()->where('job_id', $job->id)->exists()) {
+      
+        session()->flash('message', 'Already applied on this job!');
+        return redirect()->back();
+    }
+
         $user->appliedJobs()->attach($job->id); // Attach job to the user
         } else {
             return back()->with('error', 'Job not found.');
         }
 
+        session()->flash('message', 'Job Applied, wait for reply from the team!');
+        return redirect()->back();
 
-dd("job applied");
     }
 }

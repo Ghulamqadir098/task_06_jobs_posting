@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Yajra\DataTables\DataTables;
 use App\Models\Job;
+use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
@@ -102,4 +103,56 @@ return view('pages.jobs.employer_view_jobs');
    $job->delete();
    return response()->json(['success' => 'Job deleted successfully']);
 }
+
+public function job_response(){
+return view('pages.jobs.employer_job_response_view');
+}
+public function job_response_view(Request $request)
+{
+    if ($request->ajax()) {
+        $user = Auth::user(); // Get the authenticated employer
+
+        // Get the job IDs posted by this employer as an array
+        $employerJobIds = $user->postedJobs()->pluck('id')->toArray(); // Get job IDs as an array
+
+        // Check if employer has jobs
+        if (empty($employerJobIds)) {
+            return DataTables::of([]) // Return empty data if no jobs found
+                ->make(true);
+        }
+
+        // Get all the users (candidates) who applied to the employer's jobs
+        $applicants = User::whereHas('appliedJobs', function ($query) use ($employerJobIds) {
+            $query->whereIn('job_id', $employerJobIds);
+        })
+        ->with(['appliedJobs' => function ($query) use ($employerJobIds) {
+            // Fetch only jobs posted by this employer
+            $query->whereIn('job_id', $employerJobIds);
+        }])->get();
+
+        // Return data to DataTables with job and user details
+        return DataTables::of($applicants)
+            ->addColumn('applied_job', function($row) {
+                return $row->appliedJobs->pluck('title')->join('<---and---> '); // Get the job titles the user applied to
+            })
+            ->addColumn('cv', function($row){
+                $cvUrl = asset( 'storage/' .$row->cv);
+             
+
+                return '
+                                    <a href="'.$cvUrl.'" download class="btn btn-sm btn-success">
+                        Download CV
+                    </a>
+                <img src="'.$cvUrl.'" width="100" height="100" alt="hello">  
+         ';
+            })
+            ->rawColumns(['cv','applied_job'])
+            ->make(true);
+    }
+
+    return response()->json(['error' => 'Invalid request'], 400);
+}
+
+
+
 }

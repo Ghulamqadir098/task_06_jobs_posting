@@ -26,6 +26,20 @@
      @csrf
      <input type="submit" value="Confirm">
     </form>
+
+
+    @if(Session::has('message'))
+    <script>
+        Swal.fire({
+            title: 'Message!',
+            text: '{{ session('message') }}',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
+
 </div>    
 
 

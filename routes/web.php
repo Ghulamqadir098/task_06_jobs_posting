@@ -57,6 +57,8 @@ Route::prefix('job')->group(function () {
      Route::get('edit/{id}',[JobController::class,'job_edit'])->name('job.edit');
      Route::put('update/{id}',[JobController::class,'job_update'])->name('job.update');
      Route::delete('delete/{id}',[JobController::class,'job_delete'])->name('job.delete');
+     Route::get('job_response',[JobController::class,'job_response'])->name('job.response');
+     Route::get('job_response_view',[JobController::class,'job_response_view'])->name('job.response.view');
     });
 });
 
