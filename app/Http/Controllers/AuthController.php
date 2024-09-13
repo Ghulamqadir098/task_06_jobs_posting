@@ -90,6 +90,8 @@ class AuthController extends Controller
     $role=Role::find(3);
     $user->roles()->attach($role->id);
     
+
+
     return redirect('/');
 
     }
@@ -107,6 +109,10 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
         return redirect()->route('dashboard.home');
+    }
+    else{
+        session()->flash('message', 'Wrong details!');
+        return redirect()->back();
     }
     }
 

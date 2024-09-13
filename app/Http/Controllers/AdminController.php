@@ -40,7 +40,7 @@ return view('pages.jobs.admin.admin_employers_view');
         if ($request->ajax()) {
             $jobs = Job::with('employer')->get();
             return DataTables::of($jobs)
-            ->addColumn('name', function($row){
+            ->addColumn('name', function($row){ 
                 $employerName = $row->employer ? $row->employer->name : 'Unknown Employer';
                 return '
                 <span>' . $employerName . '</span>

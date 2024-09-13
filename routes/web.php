@@ -1,12 +1,15 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\AdminController;
+use Illuminate\Container\Attributes\Auth;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\DashboardController;
+use Laravel\Cashier\Http\Controllers\WebhookController;
 
 Route::get('/', function () {
     return view('pages.auth.signin_form');
@@ -48,6 +51,8 @@ Route::delete('delete/{id}',[CategoryController::class,'category_delete'])->name
 });
 
 // Jobs Related routes 
+
+
 Route::prefix('job')->group(function () {
     Route::middleware('role:employer')->group(function () {    
       Route::get('job_form',[JobController::class,'job_form'])->name('job.form');
@@ -63,6 +68,7 @@ Route::prefix('job')->group(function () {
 });
 
 
+
 // Super Admin Routes 
 Route::prefix('admin')->group(function () {
     Route::middleware('role:super_admin')->group(function () { 
@@ -75,7 +81,7 @@ Route::prefix('admin')->group(function () {
 
 });
 
-
+// Candidate Routes 
 Route::prefix('candidate')->group(function () {
 
     Route::middleware('role:candidate')->group(function () { 
@@ -85,3 +91,18 @@ Route::prefix('candidate')->group(function () {
    Route::post('job_confirmed/{id}',[CandidateController::class,'job_confirmed'])->name('candidate.job.confirmed'); 
     });
 });
+
+// Pricings routes
+
+Route::prefix('pricing')->group(function () {
+
+Route::view('view','pages.pricings.pricing');
+    
+Route::get('checkout/{plan?}',CheckoutController::class)->name('checkout');
+
+Route::view('success','pages.pricings.checkout_success')->name('checkout.success');
+});
+
+
+// cashier 
+// Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook']);
