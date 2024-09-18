@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Yajra\DataTables\DataTables;
-
 use App\Models\Job;
+
+use App\Models\User;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class AdminController extends Controller
 {
@@ -38,22 +39,22 @@ return view('pages.jobs.admin.admin_employers_view');
     public function total_employ_view(Request $request){
   
         if ($request->ajax()) {
-            $jobs = Job::with('employer')->get();
+            $jobs = User::whereNotNull('company_name')->get();
             return DataTables::of($jobs)
             ->addColumn('name', function($row){ 
-                $employerName = $row->employer ? $row->employer->name : 'Unknown Employer';
+                $employerName = $row ? $row->name : 'Unknown Employer';
                 return '
                 <span>' . $employerName . '</span>
             ';
           })
           ->addColumn('company_name', function($row){
-            $company_name = $row->employer ? $row->employer->company_name : 'Unknown Company';
+            $company_name = $row ? $row->company_name : 'Unknown Company';
             return '
             <span>' . $company_name . '</span>
         ';
       })
       ->addColumn('email', function($row){
-        $email = $row->employer ? $row->employer->email : 'Unknown email';
+        $email = $row ? $row->email : 'Unknown email';
         return '
         <span>' . $email . '</span>
     ';
