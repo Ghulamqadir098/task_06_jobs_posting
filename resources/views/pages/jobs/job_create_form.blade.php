@@ -13,24 +13,39 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Title*</label>
-                                <input type="text" class="form-control" id="title" name="title" required autofocus>
+                                <input type="text" value="{{old('title')}}" class="form-control @error('title') is-invalid @enderror" id="title" name="title" required autofocus>
+                                @error('title')
+                                <div>{{$message}}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Description*</label>
-                                <input type="text" class="form-control" id="description" name="description" required autofocus>
+                                <input type="text" value="{{old('description')}}" class="form-control @error('description') is-invalid @enderror" id="description" name="description" required autofocus>
+                                @error('description')
+                                <div>{{$message}}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Company Name*</label>
-                                <input type="text" class="form-control" id="company_name" name="company_name" required autofocus>
+                                <input type="text" value="{{old('company_name')}}" class="form-control @error('company_name') is-invalid @enderror" id="company_name" name="company_name" required autofocus>
+                                @error('company_name')
+                                <div>{{$message}}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Office Location*</label>
-                                <input type="text" class="form-control" id="office_location" name="office_location" required autofocus>
+                                <input type="text" value="{{old('office_location')}}" class="form-control @error('office_location') is-invalid @enderror" id="office_location" name="office_location" required autofocus>
+                                @error('office_location')
+                                <div>{{$message}}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Salary Range*</label>
-                                <input type="text" class="form-control" id="salary_range" name="salary_range" required autofocus>
-                            </div>
+                                <input type="text" value="{{old('salary_range')}}" class="form-control @error('salary_range') is-invalid @enderror" id="salary_range" name="salary_range" required autofocus>
+                                @error('salary_range')
+                                <div>{{$message}}</div>
+                                @enderror
+                           </div>
                             
                  
                             <div class="mb-3">
