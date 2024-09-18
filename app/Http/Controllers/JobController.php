@@ -133,7 +133,7 @@ public function job_response_view(Request $request)
         // Return data to DataTables with job and user details
         return DataTables::of($applicants)
             ->addColumn('applied_job', function($row) {
-                return $row->appliedJobs->pluck('title')->join('<---and---> '); // Get the job titles the user applied to
+                return $row->appliedJobs->pluck('title')->join('<br>'); // Get the job titles the user applied to
             })
             ->addColumn('cv', function($row){
                 $cvUrl = asset( 'storage/' .$row->cv);
