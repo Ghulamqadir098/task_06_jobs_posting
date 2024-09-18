@@ -24,11 +24,20 @@ class CandidateController extends Controller
             return DataTables::of($jobs)
             ->addColumn('action', function($row){
                 $applyUrl = route('candidate.jobs.apply', $row->id);
+                $user = Auth::user(); // Assume this is the candidate
+                // dd($user); // Assume this is the candidate
+                 if($user->appliedJobs()->where('job_id', $row->id)->exists()){
+                    return '
+                    <a href="" class="btn btn-sm btn-success">Already Applied</a>
+                   ';
 
+                 }
+                 else{
+                    return '
+                    <a href="'.$applyUrl.'" class="btn btn-sm btn-primary">Apply</a>
+                   ';
+                 }
 
-                return '
-                <a href="'.$applyUrl.'" class="btn btn-sm btn-primary">Apply</a>
-               ';
             })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -61,7 +70,7 @@ return view('pages.jobs.candidate.candidate_job_form',compact('job'));
         }
 
         session()->flash('message', 'Job Applied, wait for reply from the team!');
-        return redirect()->back();
+        return redirect()->route('candidate.jobs.index');
 
     }
 }
